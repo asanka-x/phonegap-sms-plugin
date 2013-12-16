@@ -5,8 +5,8 @@ SmsPlugin.prototype.send = function (phone, message, method, successCallback, fa
 };
 
 //Check if the device has a possibility to send and receive SMS
-SmsInboxPlugin.prototype.isSupported = function(successCallback,failureCallback) {
-    return exec(successCallback, failureCallback, 'SmsInboxPlugin', 'HasSMSPossibility', []);
+SmsPlugin.prototype.isSupported = function(successCallback,failureCallback) {
+    return PhoneGap.exec(successCallback, failureCallback, 'SmsPlugin', 'HasSMSPossibility', []);
 }
 
   /**
@@ -15,15 +15,15 @@ SmsInboxPlugin.prototype.isSupported = function(successCallback,failureCallback)
    * formatted such as: [phonenumber]>[message].
    * Example: +32472345678>Hello World
    */
-  SmsInboxPlugin.prototype.startReception = function(successCallback,failureCallback) {
-    return exec(successCallback, failureCallback, 'SmsInboxPlugin', 'StartReception', []);
+  SmsPlugin.prototype.startReception = function(successCallback,failureCallback) {
+    return PhoneGap.exec(successCallback, failureCallback, 'SmsPlugin', 'StartReception', []);
   }
 
   /**
    * Stop the receiving sms.
    */
-  SmsInboxPlugin.prototype.stopReception = function(successCallback,failureCallback) {
-    return exec(successCallback, failureCallback, 'SmsInboxPlugin', 'StopReception', []);
+  SmsPlugin.prototype.stopReception = function(successCallback,failureCallback) {
+    return PhoneGap.exec(successCallback, failureCallback, 'SmsPlugin', 'StopReception', []);
   }
 
 PhoneGap.addConstructor(function() {

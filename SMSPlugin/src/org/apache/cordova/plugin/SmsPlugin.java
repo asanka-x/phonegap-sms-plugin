@@ -3,18 +3,16 @@ package org.apache.cordova.plugin;
 import android.app.Activity;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import org.json.JSONArray;
-import org.json.JSONException;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.telephony.SmsManager;
 import org.apache.cordova.api.CallbackContext;
 import org.apache.cordova.api.CordovaPlugin;
 import org.apache.cordova.api.PluginResult;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 public class SmsPlugin extends CordovaPlugin {
     //for message sending
 	public final String ACTION_SEND_SMS = "SendSMS";
+    private SmsSender smsSender;
 
     //for message receiving
     public final String ACTION_HAS_SMS_POSSIBILITY = "HasSMSPossibility";
@@ -32,12 +30,14 @@ public class SmsPlugin extends CordovaPlugin {
 				String phoneNumber = args.getString(0);
 				String message = args.getString(1);
 				String method = args.getString(2);
-				
+                smsSender=new SmsSender(this.cordova.getActivity());
 				if(method.equalsIgnoreCase("INTENT")){
-					invokeSMSIntent(phoneNumber, message);
+                    smsSender.invokeSMSIntent(phoneNumber,message);
+					//invokeSMSIntent(phoneNumber, message);
                     callbackContext.sendPluginResult(new PluginResult( PluginResult.Status.NO_RESULT));
 				} else{
-					sendSMS(phoneNumber, message);
+                    smsSender.sendSMS(phoneNumber,message);
+					//sendSMS(phoneNumber, message);
 				}
 				
 				callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
@@ -109,19 +109,4 @@ public class SmsPlugin extends CordovaPlugin {
         }
 		return false;
 	}
-	
-	private void invokeSMSIntent(String phoneNumber, String message) {
-		Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-        sendIntent.putExtra("sms_body", message);
-        sendIntent.setType("vnd.android-dir/mms-sms");
-        this.cordova.getActivity().startActivity(sendIntent);
-	}
-
-	private void sendSMS(String phoneNumber, String message) {
-		SmsManager manager = SmsManager.getDefault();
-        PendingIntent sentIntent = PendingIntent.getActivity(this.cordova.getActivity(), 0, new Intent(), 0);
-        PendingIntent deliveryIntent=PendingIntent.getActivity(this.cordova.getActivity(),0,new Intent(),0);
-		manager.sendTextMessage(phoneNumber, null, message, sentIntent, null);
-	}
-	
 }
