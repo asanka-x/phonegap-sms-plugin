@@ -36,11 +36,9 @@ public class SmsPlugin extends CordovaPlugin {
                 smsSender=new SmsSender(this.cordova.getActivity());
 				if(method.equalsIgnoreCase("INTENT")){
                     smsSender.invokeSMSIntent(phoneNumber,message);
-					//invokeSMSIntent(phoneNumber, message);
                     callbackContext.sendPluginResult(new PluginResult( PluginResult.Status.NO_RESULT));
 				} else{
                     smsSender.sendSMS(phoneNumber,message);
-					//sendSMS(phoneNumber, message);
 				}
 				
 				callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
